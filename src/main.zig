@@ -1,11 +1,14 @@
 const std = @import("std");
 const raylib = @import("raylib");
 const world = @import("world.zig");
+const bird_util = @import("bird.zig");
 
 var pos = raylib.Vector2i{ .x = 100, .y = 200 };
 var vel = raylib.Vector2{ .x = 0, .y = 0 };
 const ground: f32 = 960 - 64;
 const jumpV: f32 = -10;
+
+var bird = bird_util.Bird.new();
 
 pub fn main() void {
     raylib.SetConfigFlags(raylib.ConfigFlags{ .FLAG_WINDOW_RESIZABLE = false });
@@ -21,21 +24,10 @@ pub fn main() void {
         world.drawBackground();
         raylib.DrawFPS(10, 10);
 
-        vel.y += world.gravity * raylib.GetFrameTime();
-        pos.x += @intFromFloat(vel.x * raylib.GetFrameTime());
-        pos.y += @intFromFloat(vel.y);
+        bird.update();
 
-        if (raylib.IsKeyPressed(raylib.KeyboardKey.KEY_SPACE)) {
-            vel.y = jumpV;
-        }
-        if (pos.y > ground) {
-            pos.y = ground;
-            vel.y = 0;
-        }
-        if (pos.y < 0) {
-            pos.y = 0;
-        }
-
-        raylib.DrawRectangle(pos.x, pos.y, 64, 64, raylib.YELLOW);
+        bird.draw();
     }
+
+    std.debug.print("Exiting...\n", .{});
 }
