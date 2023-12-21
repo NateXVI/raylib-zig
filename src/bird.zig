@@ -8,19 +8,19 @@ pub const Bird = struct {
     size: raylib.Vector2i,
     jumpV: f32,
 
-    pub fn new() Bird {
+    pub fn init() Bird {
         return Bird{
             .pos = raylib.Vector2i{ .x = 160, .y = 280 },
             .vel = raylib.Vector2{ .x = 0, .y = 0 },
             .size = raylib.Vector2i{ .x = 64, .y = 64 },
-            .jumpV = -10,
+            .jumpV = -400,
         };
     }
 
     pub fn update(self: *Bird) void {
         self.vel.y += world.gravity * raylib.GetFrameTime();
         self.pos.x += @intFromFloat(self.vel.x * raylib.GetFrameTime());
-        self.pos.y += @intFromFloat(self.vel.y);
+        self.pos.y += @intFromFloat(self.vel.y * raylib.GetFrameTime());
 
         if (raylib.IsKeyPressed(raylib.KeyboardKey.KEY_SPACE)) {
             self.vel.y = self.jumpV;

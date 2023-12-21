@@ -1,14 +1,12 @@
 const std = @import("std");
 const raylib = @import("raylib");
 const world = @import("world.zig");
-const bird_util = @import("bird.zig");
+const game_util = @import("game.zig");
 
 var pos = raylib.Vector2i{ .x = 100, .y = 200 };
 var vel = raylib.Vector2{ .x = 0, .y = 0 };
 const ground: f32 = 960 - 64;
 const jumpV: f32 = -10;
-
-var bird = bird_util.Bird.new();
 
 pub fn main() void {
     raylib.SetConfigFlags(raylib.ConfigFlags{ .FLAG_WINDOW_RESIZABLE = false });
@@ -17,6 +15,8 @@ pub fn main() void {
 
     defer raylib.CloseWindow();
 
+    var game = game_util.Game.init();
+
     while (!raylib.WindowShouldClose()) {
         raylib.BeginDrawing();
         defer raylib.EndDrawing();
@@ -24,9 +24,8 @@ pub fn main() void {
         world.drawBackground();
         raylib.DrawFPS(10, 10);
 
-        bird.update();
-
-        bird.draw();
+        game.update();
+        game.draw();
     }
 
     std.debug.print("Exiting...\n", .{});
