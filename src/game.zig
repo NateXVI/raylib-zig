@@ -1,6 +1,7 @@
 const std = @import("std");
 const bird_util = @import("bird.zig");
 const pipe_util = @import("pipe.zig");
+const score_util = @import("score.zig");
 const raylib = @import("raylib");
 
 pub const Game = struct {
@@ -19,13 +20,14 @@ pub const Game = struct {
     pub fn update(self: *Game) void {
         self.pipes.update();
         self.bird.update();
-        self.updateScore();
+        score_util.updateScore(self);
     }
 
     pub fn draw(self: *Game) void {
         self.pipes.draw();
         self.bird.draw();
-        self.drawScore();
+        score_util.drawScore(self);
+        std.debug.print("{p}\n", .{&self});
     }
 
     pub fn updateScore(self: *Game) void {
